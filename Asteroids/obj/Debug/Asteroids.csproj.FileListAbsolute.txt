@@ -1,0 +1,7 @@
+c:\users\pokem\documents\visual studio 2017\Projects\Asteroids\Asteroids\bin\Debug\Asteroids.exe.config
+c:\users\pokem\documents\visual studio 2017\Projects\Asteroids\Asteroids\bin\Debug\Asteroids.exe
+c:\users\pokem\documents\visual studio 2017\Projects\Asteroids\Asteroids\bin\Debug\Asteroids.pdb
+c:\users\pokem\documents\visual studio 2017\Projects\Asteroids\Asteroids\obj\Debug\Asteroids.exe
+c:\users\pokem\documents\visual studio 2017\Projects\Asteroids\Asteroids\obj\Debug\Asteroids.pdb
+C:\Users\pokem\Documents\Visual Studio 2017\Projects\Asteroids\Asteroids\obj\Debug\Asteroids.csprojAssemblyReference.cache
+C:\Users\pokem\Documents\Visual Studio 2017\Projects\Asteroids\Asteroids\obj\Debug\Asteroids.csproj.CoreCompileInputs.cache
