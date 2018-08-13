@@ -14,6 +14,8 @@ namespace Asteroids
         public static BufferedGraphics buffer;
 
         static BaseObject[] objs;
+        static Star[] stars;
+        static BigStar[] bigStars;
 
         public static int Width { get; set; }
         public static int Height { get; set; }
@@ -38,7 +40,7 @@ namespace Asteroids
             //Для того чтобы рисовать в буфере
             buffer = context.Allocate(grx, new Rectangle(0,0,Width,Height));
             Timer timer = new Timer();
-            timer.Interval = 100;
+            timer.Interval = 35;
             timer.Start();
             timer.Tick += Timer_Tick;
         }
@@ -66,11 +68,13 @@ namespace Asteroids
 
         public static void Load()
         {
-            objs = new BaseObject[30];
-            for (int i = 0; i < objs.Length; i++)
-            {
-                objs[i] = new BaseObject(new Point(600, i*20), new Point(15-i, 15-i), new Size(20,20));
-            }
+            objs = new BaseObject[45];
+            for (int i = 0; i < objs.Length/3; i++)
+                objs[i] = new BaseObject(new Point(600, i*52), new Point(-i, -i), new Size(10,10));
+            for (int i = objs.Length/3; i < objs.Length*2/3; i++)
+                objs[i] = new Star(new Point(600, (30-i)*40), new Point(-i,0), new Size(5, 5));
+            for (int i = objs.Length*2/3; i < objs.Length; i++)
+                objs[i] = new BigStar(new Point(600, (45-i) * 50), new Point((int)(-0.8*i), 15), new Size(12, 12));
         }
     }
 }
