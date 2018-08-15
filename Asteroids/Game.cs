@@ -14,9 +14,7 @@ namespace Asteroids
         public static BufferedGraphics buffer;
 
         static BaseObject[] objs;
-        static Star[] stars;
-        static BigStar[] bigStars;
-
+        
         public static int Width { get; set; }
         public static int Height { get; set; }
 
@@ -68,13 +66,14 @@ namespace Asteroids
 
         public static void Load()
         {
-            objs = new BaseObject[45];
-            for (int i = 0; i < objs.Length/3; i++)
-                objs[i] = new BaseObject(new Point(600, i*52), new Point(-i, -i), new Size(10,10));
-            for (int i = objs.Length/3; i < objs.Length*2/3; i++)
-                objs[i] = new Star(new Point(600, (30-i)*40), new Point(-i,0), new Size(5, 5));
-            for (int i = objs.Length*2/3; i < objs.Length; i++)
-                objs[i] = new BigStar(new Point(600, (45-i) * 50), new Point((int)(-0.8*i), 15), new Size(12, 12));
+            Random r = new Random();
+            objs = new BaseObject[90];
+            for (int i = 0; i < objs.Length / 2; i++)
+                objs[i] = new BaseObject(new Point(r.Next(0, 801), r.Next(0, 601)), new Point((int)(-i * 0.1), 0), new Size(2, 2));
+            for (int i = objs.Length/2; i < objs.Length/10*9; i++)
+                objs[i] = new Star(new Point(r.Next(0, 801), r.Next(0, 601)), new Point((int)(-i * 0.15), 0), new Size(5, 5));
+            for (int i = objs.Length/10*9; i < objs.Length; i++)
+                objs[i] = new Asteroid(new Point(r.Next(0, 801), r.Next(0, 601)), new Point((int)(-0.18*i), 15), new Size(10, 10));
         }
     }
 }

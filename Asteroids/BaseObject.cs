@@ -9,6 +9,8 @@ namespace Asteroids
 {
     class BaseObject
     {
+        Random r;
+
         protected Point pos;
         protected Point dir;
         protected Size size;
@@ -22,15 +24,19 @@ namespace Asteroids
 
         public virtual void Draw()
         {
-            Game.buffer.Graphics.DrawEllipse(Pens.Wheat, pos.X, pos.Y, size.Width, size.Height);
+            Game.buffer.Graphics.FillEllipse(Brushes.Wheat, pos.X, pos.Y, size.Width, size.Height);
         }
 
         public virtual void Update()
         {
+            r =new Random();
+            
+            if (pos.X < 0)
+            {
+                pos.X = Game.Width + size.Width;
+                pos.Y = r.Next(0, 601);
+            }
             pos.X = pos.X + dir.X;
-            pos.Y = pos.Y + dir.Y;
-            if ((pos.X < 0) || (pos.X > Game.Width)) dir.X = -dir.X;
-            if ((pos.Y < 0) || (pos.Y > Game.Width)) dir.Y = -dir.Y;
         }
     }
 }
