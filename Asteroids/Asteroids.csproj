@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="BaseObject.cs" />
     <Compile Include="Asteroid.cs" />
+    <Compile Include="Bullet.cs" />
+    <Compile Include="FarStar.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -53,6 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="pictures\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

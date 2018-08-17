@@ -10,11 +10,12 @@ namespace Asteroids
 {
     class Asteroid : BaseObject
     {
-        Random r;
-        private readonly Image img = Image.FromFile(Application.StartupPath + "/asteroid.png");
+        private readonly Image img = Image.FromFile(Game.path + "/asteroid.png");
         int key=0;
+        public int Power { get; set; }
+
         public Asteroid(Point pos, Point dir, Size size) : base(pos, dir, size)
-        { }
+        { Power = 1; }
 
         public override void Draw()
         {

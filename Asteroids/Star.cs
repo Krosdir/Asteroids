@@ -9,14 +9,15 @@ namespace Asteroids
 {
     class Star : BaseObject
     {
+        private readonly Image img = Image.FromFile(Game.path + "/CloseStar.png");
+
         public Star(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
         }
 
         public override void Draw()
         {
-            Game.buffer.Graphics.DrawLine(Pens.SandyBrown, pos.X, pos.Y, pos.X+size.Width, pos.Y+size.Height);
-            Game.buffer.Graphics.DrawLine(Pens.SandyBrown, pos.X+size.Width, pos.Y, pos.X, pos.Y+size.Height);
+            Game.buffer.Graphics.DrawImage(img, pos.X, pos.Y, size.Width+15, size.Height+15);
         }
 
         

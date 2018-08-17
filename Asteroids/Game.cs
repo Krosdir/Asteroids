@@ -13,8 +13,12 @@ namespace Asteroids
         static BufferedGraphicsContext context;
         public static BufferedGraphics buffer;
 
+        public static string path = @"C:/Users/pokem/Documents/Visual Studio 2017/Projects/Asteroids/Asteroids/pictures";
+
         static BaseObject[] objs;
-        
+        static Asteroid[] asteroids;
+        static Bullet bullet;
+
         public static int Width { get; set; }
         public static int Height { get; set; }
 
@@ -55,6 +59,9 @@ namespace Asteroids
             buffer.Graphics.Clear(Color.Black);
             foreach (BaseObject obj in objs)
                 obj.Draw();
+            foreach (Asteroid obj in asteroids)
+                obj.Draw();
+            bullet.Draw();
             buffer.Render();
         }
 
@@ -62,18 +69,29 @@ namespace Asteroids
         {
             foreach (BaseObject obj in objs)
                 obj.Update();
+            foreach (Asteroid obj in asteroids)
+            {
+                obj.Update();
+                if (obj.Collision(bullet))
+                {
+                    MessageBox.Show("");
+                }
+            }
+            bullet.Update();
         }
 
         public static void Load()
         {
             Random r = new Random();
-            objs = new BaseObject[90];
-            for (int i = 0; i < objs.Length / 2; i++)
-                objs[i] = new BaseObject(new Point(r.Next(0, 801), r.Next(0, 601)), new Point((int)(-i * 0.1), 0), new Size(2, 2));
-            for (int i = objs.Length/2; i < objs.Length/10*9; i++)
-                objs[i] = new Star(new Point(r.Next(0, 801), r.Next(0, 601)), new Point((int)(-i * 0.15), 0), new Size(5, 5));
-            for (int i = objs.Length/10*9; i < objs.Length; i++)
-                objs[i] = new Asteroid(new Point(r.Next(0, 801), r.Next(0, 601)), new Point((int)(-0.18*i), 15), new Size(10, 10));
+            objs = new BaseObject[80];
+            asteroids = new Asteroid[9];
+            bullet = new Bullet(new Point(0,200), new Point(5,0), new Size(8,2));
+            for (int i = 0; i < objs.Length / 2+10; i++)
+                objs[i] = new FarStar(new Point(r.Next(0, 801), r.Next(0, 601)), new Point(r.Next((int)-2.5,(int)-0.1), 0), new Size(2, 2));
+            for (int i = objs.Length / 2 + 10; i < objs.Length; i++)
+                objs[i] = new Star(new Point(r.Next(0, 801), r.Next(0, 601)), new Point((int)(-i * 0.05), 0), new Size(5, 5));
+            for (int i = 0; i < asteroids.Length; i++)
+                asteroids[i] = new Asteroid(new Point(r.Next(0, 801), r.Next(0, 601)), new Point(r.Next(-10,-1), 15), new Size(r.Next(2,25), r.Next(2, 25)));
         }
     }
 }
