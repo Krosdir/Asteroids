@@ -20,7 +20,17 @@ namespace Asteroids
             Game.buffer.Graphics.DrawImage(img, pos.X, pos.Y, size.Width+15, size.Height+15);
         }
 
-        
+        public override void Update()
+        {
+            r = new Random();
+            if (pos.X < 0)
+            {
+                pos.X = Game.Width + size.Width;
+                pos.Y = r.Next(0, Game.Height);
+            }
+            pos.X = pos.X + dir.X;
+
+        }
 
     }
 }

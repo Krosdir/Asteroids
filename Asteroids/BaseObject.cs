@@ -13,6 +13,8 @@ namespace Asteroids
         Rectangle Rect { get; }
     }
 
+    delegate void Message();
+
     abstract class BaseObject : ICollision
     {
 
@@ -29,6 +31,29 @@ namespace Asteroids
             this.size = size;
         }
 
+        public int X
+        {
+            get
+            {
+                return pos.X;
+            }
+            set
+            {
+                pos.X = value;
+            }
+        }
+        public int Y
+        {
+            get
+            {
+                return pos.Y;
+            }
+            set
+            {
+                pos.Y = value;
+            }
+        }
+
         public Rectangle Rect
         {
             get
@@ -39,26 +64,12 @@ namespace Asteroids
 
         abstract public void Draw();
 
-        public virtual void Update()
-        {
-            r =new Random();
-            if (pos.X < 0)
-            {
-                pos.X = Game.Width + size.Width;
-                pos.Y = r.Next(0, Game.Height);
-            }
-            pos.X = pos.X + dir.X;
-
-        }
+        abstract public void Update();
 
         public bool Collision(ICollision o)
         {
             if (o.Rect.IntersectsWith(Rect))
-            {
-                pos.X = Game.Width + size.Width;
-                pos.Y = r.Next(0, Game.Height - 50);
                 return true;
-            }
             else
                 return false;
         }

@@ -15,7 +15,7 @@ namespace Asteroids
         public int Power { get; set; }
 
         public Asteroid(Point pos, Point dir, Size size) : base(pos, dir, size)
-        { Power = 1; }
+        { r = new Random();  Power = r.Next(1,11); }
 
         public override void Draw()
         {
