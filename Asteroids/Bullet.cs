@@ -9,6 +9,8 @@ namespace Asteroids
 {
     class Bullet : BaseObject
     {
+        public static event Action<Bullet> BulletDie;
+
         public Bullet(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
 
@@ -24,8 +26,9 @@ namespace Asteroids
             pos.X+=10;
             if (pos.X > Game.Width)
             {
-                pos.X = 0;
-                pos.Y = r.Next(0, Game.Height-50);
+                //pos.X = 0;
+                //pos.Y = r.Next(0, Game.Height-50);
+                BulletDie?.Invoke(this);
             }
         }
 
