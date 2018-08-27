@@ -7,17 +7,18 @@ using System.Drawing;
 
 namespace Asteroids
 {
-    delegate int Delegate();
-
     class Ship : BaseObject
     {
-        private readonly Image img = Image.FromFile(Game.path + "/spaceship.png");
+        private readonly Image img = Image.FromFile(Game.path + "/spaceship2.png");
 
         public static event Message MessageDie;
-        public static Delegate Event;
 
         public int Energy { get; private set; } = 100;
-        public static int bulletcount = 0;
+        public int Power { get; set; } = 10;
+
+        public static bool isUpHolded;
+        public static bool isDownHolded;
+        public static bool isCtrlHolded;
 
         public void EnergyLow(int n)
         {

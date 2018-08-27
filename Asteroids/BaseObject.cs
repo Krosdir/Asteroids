@@ -22,7 +22,7 @@ namespace Asteroids
         protected Point dir;
         protected Size size;
 
-        protected static Random r;
+        protected static Random r = new Random();
 
         public BaseObject(Point pos, Point dir, Size size)
         {
@@ -52,6 +52,10 @@ namespace Asteroids
             {
                 pos.Y = value;
             }
+        }
+        public Size Size(Size size)
+        {
+            return this.size = size;
         }
 
         public Rectangle Rect

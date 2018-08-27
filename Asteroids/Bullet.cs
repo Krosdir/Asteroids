@@ -9,7 +9,10 @@ namespace Asteroids
 {
     class Bullet : BaseObject
     {
+        private readonly Image img = Image.FromFile(Game.path + "/bullet.png");
+
         public static event Action<Bullet> BulletDie;
+        public static int bulletcount = 0;
 
         public Bullet(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
@@ -18,12 +21,12 @@ namespace Asteroids
 
         public override void Draw()
         {
-            Game.buffer.Graphics.FillRectangle(Brushes.OrangeRed, pos.X, pos.Y, size.Width, size.Height);
+            Game.buffer.Graphics.DrawImage(img, pos.X, pos.Y, size.Width, size.Height);
         }
 
         public override void Update()
         {
-            pos.X+=10;
+            pos.X+=30;
             if (pos.X > Game.Width)
             {
                 //pos.X = 0;

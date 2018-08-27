@@ -13,9 +13,17 @@ namespace Asteroids
         private readonly Image img = Image.FromFile(Game.path + "/asteroid.png");
         int key=0;
         public int Power { get; set; }
+        int up, down;
 
         public Asteroid(Point pos, Point dir, Size size) : base(pos, dir, size)
-        { r = new Random();  Power = r.Next(1,11); }
+        {
+            Power = r.Next(24,70);
+            this.pos = pos;
+            this.dir = dir;
+            this.size = size;
+            down = r.Next(30, 50);
+            up = down * 2;
+        }
 
         public override void Draw()
         {
@@ -24,20 +32,19 @@ namespace Asteroids
 
         public override void Update()
         {
-            r = new Random();
-            if (key < 40)
+            if (key < down)
             {
                 pos.X = pos.X + dir.X;
                 pos.Y = pos.Y + (int)(dir.Y * 0.1);
                 key++;
             }
-            else if (key < 80 && key >= 40)
+            else if (key < up && key >= down)
             {
                 pos.X = pos.X + dir.X;
                 pos.Y = pos.Y - (int)(dir.Y  *0.1);
                 key++;
             }
-            if (key == 80) key = 0;
+            if (key == up) key = 0;
             if (pos.X < 0)
             {
                 pos.X = Game.Width + size.Width;

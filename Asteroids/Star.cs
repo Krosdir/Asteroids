@@ -22,7 +22,6 @@ namespace Asteroids
 
         public override void Update()
         {
-            r = new Random();
             if (pos.X < 0)
             {
                 pos.X = Game.Width + size.Width;
