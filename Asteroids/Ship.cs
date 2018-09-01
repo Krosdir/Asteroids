@@ -15,6 +15,7 @@ namespace Asteroids
 
         public int Energy { get; private set; } = 100;
         public int Power { get; set; } = 10;
+        public int Experience { get; set; } = 0;
 
         public static bool isUpHolded;
         public static bool isDownHolded;

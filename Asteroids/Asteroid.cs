@@ -13,7 +13,10 @@ namespace Asteroids
         private readonly Image img = Image.FromFile(Game.path + "/asteroid.png");
         int key=0;
         public int Power { get; set; }
-        int up, down;
+        public int powermem;
+
+        private readonly int up;
+        private readonly int down;
 
         public Asteroid(Point pos, Point dir, Size size) : base(pos, dir, size)
         {

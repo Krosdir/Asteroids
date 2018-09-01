@@ -19,10 +19,12 @@ namespace Asteroids
         static BaseObject[] objs;
         static List<Asteroid> asteroids;
         static List<Bullet> bullets;
+        static List<Rocket> rockets;
 
         static Random r;
         static Timer timer;
         static Timer timershoot = new Timer();
+        static int countasteroids = 20;
         
 
         public static int Width { get; set; }
@@ -59,14 +61,26 @@ namespace Asteroids
             form.KeyUp += Form_KeyUp;
             Ship.MessageDie += Finish;
             Bullet.BulletDie += Bullet_BulletDie;
+            Rocket.RocketDie += Rocket_RocketDie;
+        }
+
+        private static void Rocket_RocketDie(Rocket rocket)
+        {
+            rockets.Remove(rocket);
         }
 
         private static void Timershoot_Tick(object sender, EventArgs e)
         {
-            if (Ship.isCtrlHolded)
+            if (Ship.isCtrlHolded && ship.Experience >= 0 && ship.Experience < 500)
             {
                 bullets.Add(new Bullet(new Point(ship.Rect.Width + 15, ship.Rect.Y + 30), new Point(5, 0), new Size(16, 16)));
                 Bullet.bulletcount++;
+            }
+            if (Ship.isCtrlHolded && ship.Experience >= 500)
+            {
+                bullets.Add(new Bullet(new Point(ship.Rect.Width + 15, ship.Rect.Y + 20), new Point(5, 0), new Size(16, 16)));
+                bullets.Add(new Bullet(new Point(ship.Rect.Width + 15, ship.Rect.Y + 40), new Point(5, 0), new Size(16, 16)));
+                Bullet.bulletcount=Bullet.bulletcount+2;
             }
         }
 
@@ -87,6 +101,8 @@ namespace Asteroids
             if (e.KeyCode == Keys.ControlKey) Ship.isCtrlHolded = true;
             if (e.KeyCode == Keys.Up) Ship.isUpHolded = true;
             if (e.KeyCode == Keys.Down) Ship.isDownHolded = true;
+            //TO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+            if (e.KeyCode == Keys.Z) rockets.Add(new Rocket(new Point(ship.Rect.Width + 15, ship.Rect.Y+5), new Point(5, 0), new Size(66, 66)));
         }
 
         private static void Timer_Tick(object sender, EventArgs e)
@@ -108,9 +124,12 @@ namespace Asteroids
                 obj.Draw();
             foreach (Bullet bullet in bullets)
                 bullet.Draw();
+            foreach (Rocket rocket in rockets)
+                rocket.Draw();
             ship.Draw();
             buffer.Graphics.DrawString("Energy: " + ship.Energy, SystemFonts.DefaultFont, Brushes.White, 0, 0);
             buffer.Graphics.DrawString("Count of bullet: " + Bullet.bulletcount, SystemFonts.DefaultFont, Brushes.White, 0, 15);
+            buffer.Graphics.DrawString("Experience: " + ship.Experience, SystemFonts.DefaultFont, Brushes.White, 1800, 0);
             buffer.Render();
         }
 
@@ -135,25 +154,9 @@ namespace Asteroids
             //foreach (Bullet bullet in bullets) bullet.Update();
             for (int i = 0; i < asteroids.Count; i++)
             {
+                
+                asteroids[i].powermem = asteroids[i].Power;
                     asteroids[i].Update();
-                    for (int j=0; j<bullets.Count; j++)
-                    if (asteroids[i].Collision(bullets[j]))
-                    {
-                        //System.Media.SystemSounds.Hand.Play();
-                        asteroids[i].Power -= ship.Power;
-                        if (asteroids[i].Power<=0)
-                        {
-                            //asteroids.RemoveAt(i);
-                            //asteroids.Add(new Asteroid(new Point(1930, r.Next(0, 1081)), new Point(r.Next(-10, -1), 15), new Size(1, 1)));
-                            //asteroids[i].Size(new Size(asteroids[i].Power, asteroids[i].Power));
-                            //asteroids[i].Draw();
-                            asteroids[i].X = Width;
-                            asteroids[i].Y = r.Next(0, Height - 50);
-                        }
-
-                        bullets.RemoveAt(j);
-                            j--;
-                    }
                     if (ship.Collision(asteroids[i]))
                     {
                         ship.EnergyLow(r.Next(1,10));
@@ -162,9 +165,48 @@ namespace Asteroids
                         System.Media.SystemSounds.Asterisk.Play();
                         if (ship.Energy <= 0) ship.Die();
                     }
+                for (int j = 0; j < bullets.Count && asteroids.Count > 0; j++)
+                    if (bullets[j].Collision(asteroids[i]))
+                    {
+                        //System.Media.SystemSounds.Hand.Play();
+                        //TO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+                        if (asteroids[i].Power - ship.Power < 0)
+                        {
+                            ship.Experience += asteroids[i].Power;
+                            asteroids[i].Power -= asteroids[i].Power;
+                        }
+                        else
+                        {
+                            ship.Experience += ship.Power;
+                            asteroids[i].Power -= ship.Power;
+                        }
+                        if (asteroids[i].Power <= 0)
+                        {
+                            asteroids.RemoveAt(i);
+                            if (i > 0)
+                                i--;
+                        }
+                        bullets.RemoveAt(j);
+                        j--;
+                        if (asteroids.Count == 0)
+                            ReviveWave();
+                    }
+                
             }
             for (int i = 0; i < bullets.Count; i++)
                 bullets[i].Update();
+            for (int i = 0; i < rockets.Count; i++)
+                rockets[i].Update();
+        }
+
+        public static void ReviveWave()
+        {
+            countasteroids++;
+            for (int i = 0; i < countasteroids; i++)
+            {
+                asteroids.Add(new Asteroid(new Point(r.Next(1921,3842), r.Next(0, 1061)), new Point(r.Next(-10, -1), 15), new Size(1, 1)));
+                asteroids[i].Size(new Size(asteroids[i].Power, asteroids[i].Power));
+            }
         }
 
         public static void Load()
@@ -173,13 +215,14 @@ namespace Asteroids
             objs = new BaseObject[320];
             asteroids = new List<Asteroid>(9);
             bullets = new List<Bullet>();
+            rockets = new List<Rocket>();
             for (int i = 0; i < objs.Length / 2+40; i++)
                 objs[i] = new FarStar(new Point(r.Next(0, 1921), r.Next(0, 1081)), new Point(r.Next(-2,0), 0), new Size(2, 2));
             for (int i = objs.Length / 2 + 40; i < objs.Length; i++)
                 objs[i] = new Star(new Point(r.Next(0, 1921), r.Next(0, 1081)), new Point(r.Next(-4,-1), 0), new Size(5, 5));
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < countasteroids; i++)
             {
-                asteroids.Add(new Asteroid(new Point(r.Next(0, 1921), r.Next(0, 1081)), new Point(r.Next(-10, -1), 15), new Size(1, 1)));
+                asteroids.Add(new Asteroid(new Point(r.Next(0, 1921), r.Next(0, 1061)), new Point(r.Next(-10, -1), 15), new Size(1, 1)));
                 asteroids[i].Size(new Size(asteroids[i].Power, asteroids[i].Power));
             }
         }
