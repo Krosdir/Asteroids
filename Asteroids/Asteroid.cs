@@ -21,9 +21,7 @@ namespace Asteroids
         public Asteroid(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
             Power = r.Next(24,70);
-            this.pos = pos;
-            this.dir = dir;
-            this.size = size;
+            powermem = Power;
             down = r.Next(30, 50);
             up = down * 2;
         }
