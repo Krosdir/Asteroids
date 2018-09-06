@@ -19,6 +19,8 @@ namespace Asteroids
 
         public static bool isUpHolded;
         public static bool isDownHolded;
+        public static bool isLeftHolded;
+        public static bool isRightHolded;
         public static bool isCtrlHolded;
 
         public void EnergyLow(int n)
@@ -47,6 +49,16 @@ namespace Asteroids
         public void Down()
         {
             if (pos.Y < Game.Height) pos.Y += dir.Y;
+        }
+
+        public void Left()
+        {
+            if (pos.X > 0) pos.X -= dir.X;
+        }
+
+        public void Right()
+        {
+            if (pos.X < Game.Width) pos.X += dir.X;
         }
 
         public void Die()
