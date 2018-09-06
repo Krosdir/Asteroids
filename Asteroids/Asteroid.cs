@@ -5,16 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace Asteroids
 {
     class Asteroid : BaseObject
     {
-        private readonly Image img = Image.FromFile(Game.path + "/asteroid.png");
+        Image img = Image.FromFile(Game.path + "/asteroid.png");
         int key=0;
         public int Power { get; set; }
         public int powermem;
+        public float angle;
 
+        Graphics g;
+        Bitmap img2;
         private readonly int up;
         private readonly int down;
 
@@ -24,11 +28,22 @@ namespace Asteroids
             powermem = Power;
             down = r.Next(30, 50);
             up = down * 2;
+            angle = dir.X;
         }
 
         public override void Draw()
         {
-            Game.buffer.Graphics.DrawImage(img, pos.X,pos.Y,size.Width,size.Height);
+            img2 = new Bitmap(img.Width,img.Height, img.PixelFormat);
+            g = Graphics.FromImage(img2);
+            g.TranslateTransform(img.Width / 2, img.Height / 2);
+            g.RotateTransform(angle);
+            g.TranslateTransform(-img.Width / 2, -img.Height / 2);
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.DrawImage(img, 0, 0, img.Width, img.Height);
+            g.Dispose();
+            Game.buffer.Graphics.DrawImage(img2, pos.X,pos.Y,size.Width,size.Height);
+            if (angle < 360) angle += dir.X;
+            else angle = 0;
         }
 
         public override void Update()
@@ -51,6 +66,7 @@ namespace Asteroids
                 pos.X = Game.Width + size.Width;
                 pos.Y = r.Next(0,601);
             }
+            //img.RotateFlip(RotateFlipType.Rotate270FlipXY);
         }
     }
 }

@@ -187,12 +187,12 @@ namespace Asteroids
                         //TO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
                         if (asteroids[i].Power - ship.Power < 0)
                         {
-                            ship.Experience += asteroids[i].Power;
+                            ship.Experience += asteroids[i].Power/2;
                             asteroids[i].Power -= asteroids[i].Power;
                         }
                         else
                         {
-                            ship.Experience += ship.Power;
+                            ship.Experience += ship.Power/2;
                             asteroids[i].Power -= ship.Power;
                         }
                         if (asteroids[i].Power <= 0)
