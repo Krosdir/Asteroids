@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Asteroids
 {
@@ -13,7 +14,7 @@ namespace Asteroids
         static BufferedGraphicsContext context;
         public static BufferedGraphics buffer;
 
-        public static string path = @"C:/Users/pokem/Documents/Visual Studio 2017/Projects/Asteroids/Asteroids/pictures";
+        public static string path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "/pictures";
 
         static Ship ship = new Ship(new Point(10,400), new Point(12,12), new Size(75,75));
         static BaseObject[] objs;
@@ -23,7 +24,7 @@ namespace Asteroids
         static List<Rocket> rockets;
 
         static Random r;
-        static Timer timer;
+        public static Timer timer;
         static Timer timershoot = new Timer();
         static int countasteroids = 20;
         
@@ -112,6 +113,22 @@ namespace Asteroids
             if (e.KeyCode == Keys.Down) Ship.isDownHolded = true;
             if (e.KeyCode == Keys.Left) Ship.isLeftHolded = true;
             if (e.KeyCode == Keys.Right) Ship.isRightHolded = true;
+
+            if (e.KeyCode == Keys.NumPad0) timer.Interval = 35;
+            if (e.KeyCode == Keys.NumPad1) timer.Interval = 100;
+            if (e.KeyCode == Keys.NumPad2) timer.Interval = 200;
+            if (e.KeyCode == Keys.NumPad3) timer.Interval = 300;
+            if (e.KeyCode == Keys.NumPad4) timer.Interval = 400;
+            if (e.KeyCode == Keys.NumPad5) timer.Interval = 500;
+            if (e.KeyCode == Keys.NumPad6) timer.Interval = 600;
+            if (e.KeyCode == Keys.NumPad7) timer.Interval = 700;
+            if (e.KeyCode == Keys.NumPad8) timer.Interval = 800;
+            if (e.KeyCode == Keys.NumPad9) timer.Interval = 900;
+
+
+            if (e.KeyCode == Keys.P) timer.Stop();
+            if (e.KeyCode == Keys.S) timer.Start();
+
             //TO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
             if (e.KeyCode == Keys.Z) rockets.Add(new Rocket(new Point(ship.Rect.X + ship.Rect.Width + 15, ship.Rect.Y+5), new Point(5, 0), new Size(66, 66)));
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace Asteroids
 {
@@ -13,14 +14,14 @@ namespace Asteroids
 
         public static event Action<Shard> ShardDie;
 
-        private int keyX, keyY;
+        private int keyX=0, keyY=0;
+        Graphics g;
+        Bitmap img2;
 
         public Shard(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
-            keyX = r.Next(-1, 2);
             while (keyX == 0)
                 keyX = r.Next(-1, 2);
-            keyY = r.Next(-1, 2);
             while (keyY == 0)
                 keyY = r.Next(-1, 2);
         }
@@ -28,7 +29,19 @@ namespace Asteroids
 
         public override void Draw()
         {
-            Game.buffer.Graphics.DrawImage(img, pos.X, pos.Y, size.Width, size.Height);
+            img2 = new Bitmap(img.Width, img.Height, img.PixelFormat);
+            g = Graphics.FromImage(img2);
+            g.TranslateTransform(img.Width / 2, img.Height / 2);
+            g.RotateTransform(angle);
+            g.TranslateTransform(-img.Width / 2, -img.Height / 2);
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.DrawImage(img, 0, 0, img.Width, img.Height);
+            g.Dispose();
+            Game.buffer.Graphics.DrawImage(img2, pos.X, pos.Y, size.Width, size.Height);
+            if (keyX > 0) angle += dir.X;
+            else if (angle >= 360) angle = 0;
+            if (keyX < 0) angle -= dir.X;
+            else if (angle <= -360) angle = 0;
         }
 
         public override void Update()
@@ -40,8 +53,6 @@ namespace Asteroids
             
             if (pos.X > Game.Width || pos.X < 0 || pos.Y > Game.Height || pos.Y < 0)
             {
-                //pos.X = 0;
-                //pos.Y = r.Next(0, Game.Height-50);
                 ShardDie?.Invoke(this);
             }
         }

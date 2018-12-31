@@ -29,8 +29,6 @@ namespace Asteroids
             pos.X+=30;
             if (pos.X > Game.Width)
             {
-                //pos.X = 0;
-                //pos.Y = r.Next(0, Game.Height-50);
                 BulletDie?.Invoke(this);
             }
         }
